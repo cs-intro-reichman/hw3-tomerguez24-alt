@@ -28,22 +28,62 @@ public class Anagram {
 
 	// Returns true if the two given strings are anagrams, false otherwise.
 	public static boolean isAnagram(String str1, String str2) {
-		// Replace the following statement with your code
-		return false;
-	}
+		 String s1 = preProcess(str1);
+        String s2 = preProcess(str2);
+        if (s1.length() != s2.length()) {
+            return false;
+        }
+        int[] counts = new int[26];
+        for (int i = 0; i < s1.length(); i++) {
+            char c = s1.charAt(i);      
+            counts[c - 'a']++;
+        }
+
+        for (int i = 0; i < s2.length(); i++) {
+            char c = s2.charAt(i);      
+            counts[c - 'a']--;
+        }
+        for (int i = 0; i < 26; i++) {
+            if (counts[i] != 0) 
+                return false;
+            
+        }
+        return true;
+    }
+	
 	   
 	// Returns a preprocessed version of the given string: all the letter characters are converted
 	// to lower-case, and all the other characters are deleted, except for spaces, which are left
 	// as is. For example, the string "What? No way!" becomes "whatnoway"
 	public static String preProcess(String str) {
-		// Replace the following statement with your code
-		return "";
-	} 
+		StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (Character.isLetter(c)) 
+                sb.append(Character.toLowerCase(c));
+            }
+        }
+
+        return sb.toString();
+    } 
+	
 	   
 	// Returns a random anagram of the given string. The random anagram consists of the same
 	// characters as the given string, re-arranged in a random order. 
 	public static String randomAnagram(String str) {
-		// Replace the following statement with your code
-		return "";
-	}
-}
+		char[] arr = str.toCharArray();
+
+        for (int i = arr.length - 1; i > 0; i--) {
+            int j = (int) (Math.random() * (i + 1)); 
+            char temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+
+        return new String(arr);
+    }
+
+	
+
+
