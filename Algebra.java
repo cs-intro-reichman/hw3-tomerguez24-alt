@@ -39,7 +39,7 @@ public class Algebra {
 		x1--;
 		x3++;
 		return x1;}
-		
+		return 0;
 	}
 
 	// Returns x1 * x2
