@@ -9,6 +9,10 @@ public class LoanCalc {
     // interest rate (double, as a percentage), and number of payments (int).  
 	public static void main(String[] args) {		
 		// Gets the loan data
+       if (args.length < 3) {
+        System.out.println("Usage: java LoanCalc <loan> <rate> <numPeriods>");
+        return;
+    }		
 		double loan = Double.parseDouble(args[0]);
 		double rate = Double.parseDouble(args[1]);
 		int n = Integer.parseInt(args[2]);
@@ -40,37 +44,48 @@ public class LoanCalc {
 	// the number of periods (n), and epsilon, the approximation's accuracy
 	// Side effect: modifies the class variable iterationCounter.
     public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {
-		iterationCounter=0;
-		double payment=0.0;
-		double balance=endBalance(loan,rate,n,payment);
-		while (balance>epsilon){
-			payment+=epsilon;
-			iterationCounter++;
-			balance=endBalance(loan,rate,n,payment);
-		}
-		return payment;
+    iterationCounter = 0;
+    double payment = 0.0;
+    double balance = endBalance(loan, rate, n, payment);
+    while (balance > 0 && iterationCounter < 1_000_000) { 
+        payment += epsilon;              
+        iterationCounter++;
+        balance = endBalance(loan, rate, n, payment);
     }
-    
+
+    return payment;
+}
     // Uses bisection search to compute an approximation of the periodical payment 
 	// that will bring the ending balance of a loan close to 0.
 	// Given: the sum of the loan, the periodical interest rate (as a percentage),
 	// the number of periods (n), and epsilon, the approximation's accuracy
 	// Side effect: modifies the class variable iterationCounter.
     public static double bisectionSolver(double loan, double rate, int n, double epsilon) {  
-        double lo=0;
-		double hi=loan;
-		iterationCounter=0;
-		while ((lo<=hi)&&iterationCounter<10000){
-			double mid=(lo+hi)/2;
-			double bal=endBalance(loan,rate,n,mid);
-			if(Math.abs(bal)<=epsilon)
-			return mid;
-			else if(bal>epsilon)
-			lo=mid;
-			else
-			hi=mid;
-			iterationCounter++;
-		}
-		return (hi+lo)/2;
+    iterationCounter = 0;
+
+    double lo = 0;
+    double hi = loan; 
+
+    while (endBalance(loan, rate, n, hi) > 0) {
+        hi *= 2; 
     }
+
+    double mid = 0;
+    double bal;
+
+    while ((hi - lo) > epsilon && iterationCounter < 10000) {
+        mid = (lo + hi) / 2.0;
+        bal = endBalance(loan, rate, n, mid);
+
+        if (bal > 0) {        
+            lo = mid;
+        } else {              
+            hi = mid;
+        }
+
+        iterationCounter++;
+    }
+
+    return (lo + hi) / 2.0;
+}
 }

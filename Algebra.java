@@ -23,72 +23,78 @@ public class Algebra {
    		System.out.println(sqrt(76123));
 	}  
 
-	// Returns x1 + x2
-	public static int plus(int x1, int x2) {
-		int x3=0;
-		while(x3<x2){ 
-		x1++;
-		x3++;}
-		return x1;
-	}
+    public static int plus(int x1, int x2) {
+        int x3 = 0;
+        while (x3 < x2) { 
+            x1++;
+            x3++;
+        }
+        return x1;
+    }
 
-	// Returns x1 - x2
-	public static int minus(int x1, int x2) {
-		int x3=0;
-		while(x3<x2){
-		x1--;
-		x3++;
-		return x1;}
-		return 0;
-	}
+    // Returns x1 - x2
+    public static int minus(int x1, int x2) {
+        int x3 = 0;
+        while (x3 < x2) {
+            x1--;
+            x3++;
+        }
+        return x1;
+    }
+    public static int times(int x1, int x2) {
+        int x3 = 0;
+        int res = 0;
+        while (x3 < x2) {
+            res = plus(res, x1);
+            x3++;
+        }
+        return res;
+    }
 
-	// Returns x1 * x2
-	public static int times(int x1, int x2) {
-		int x3=0;
-		int res=0;
-		while(x3<x2)
-		res=plus(x1,x1);
-		x3++;
-		return x1;
-	}
-
-	// Returns x^n (for n >= 0)
-	public static int pow(int x, int n) {
-		int result = 1;
+    // Returns x^n (for n >= 0)
+    public static int pow(int x, int n) {
+        int result = 1;
         int i = 0;
         while (i < n) {
-        result = times(result, x);
-          i++;
-}
-    return result;
-	}
+            result = times(result, x);
+            i++;
+        }
+        return result;
+    }
 
-	// Returns the integer part of x1 / x2 
-	public static int div(int x1, int x2) {
-		int x3-0;
-	while (x1 >= x2) {
-    x1 = minus(x1, x2);
-    x3++;
-	return x3;
-}
-}
+    // Returns the integer part of x1 / x2 
+    public static int div(int x1, int x2) {
+        if (x2 == 0) {
+            throw new IllegalArgumentException("Division by zero");
+        }
+        int x3 = 0;
+        while (x1 >= x2) {
+            x1 = minus(x1, x2);
+            x3++;
+        }
+        return x3;
+    }
 
-	
+    // Returns x1 % x2
+    public static int mod(int x1, int x2) {
+        if (x2 == 0) {
+            throw new IllegalArgumentException("Modulo by zero");
+        }
+        while (x1 >= x2) {
+            x1 = minus(x1, x2);
+        }
+        return x1;
+    }
 
-	// Returns x1 % x2
-	public static int mod(int x1, int x2) {
-		while(x1>=x2){
-		x1=minus(x1,x2);
-		return x1;}
-	}	
-
-	// Returns the integer part of sqrt(x) 
-	public static int sqrt(int x) {
-	 int x3=0;
-		while(x>=times(x3,x3))
-		if(times(x3,x3)==x){
-		return x3;
-		else
-		x3++}
-	}	  	  
+    // Returns the integer part of sqrt(x) 
+    public static int sqrt(int x) {
+        if (x < 0) {
+            throw new IllegalArgumentException("Negative number");
+        }
+        int r = 0;
+        while (times(r + 1, r + 1) <= x) {
+            r++;
+        }
+        return r;
+    }      
 }
